@@ -44,6 +44,7 @@
 
 <script>
 const axios = require("axios");
+const Swal = require("sweetalert2");
 
 export default {
   name: "Home",
@@ -85,10 +86,19 @@ export default {
           }
           this.page = jsonPhotos.data.page;
         } catch (e) {
-          console.log(e);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong while trying to autheticate you.",
+            footer: "Please refresh the page and try again"
+          });
         }
       } catch (error) {
-        console.error(error);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "You already have a token"
+        });
       }
     }
   },
@@ -107,7 +117,12 @@ export default {
         this.photo = response.data;
         this.dialog = true;
       } catch (e) {
-        console.log(e);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong while trying to load the photo",
+          footer: "Please try again in a couple of minutes"
+        });
       }
     },
     async morePhotos() {
@@ -128,7 +143,12 @@ export default {
         this.page = response.data.page;
         this.disabled = false;
       } catch (e) {
-        console.log(e);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong while trying to load more photos",
+          footer: "Please try again in a couple of minutes"
+        });
       }
     }
   },
@@ -147,7 +167,12 @@ export default {
         );
         this.photo = response.data;
       } catch (e) {
-        console.log(e);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong while trying to load the photo",
+          footer: "Please try again in a couple of minutes"
+        });
       }
     }
   }
