@@ -38,8 +38,9 @@
             job done.
           </li>
         </ul>
+        <br />
         <p>
-          Overall i thin it was a nice challenge and i hope i was able to
+          Overall i think it was a nice challenge and i hope i was able to
           achieve the goal of the excercise.
         </p>
         <p>
