@@ -1,12 +1,14 @@
 <template>
   <div class="home">
     <v-row v-if="!ready">
-      <v-col cols="12" justify="center">
+      <v-col cols="12" justify="center" class="text-center">
         <v-progress-circular
           :size="50"
           color="primary"
           indeterminate
+          class="text-center"
         ></v-progress-circular>
+        <h2>Loading photos...</h2>
       </v-col>
     </v-row>
     <v-row v-if="ready">
@@ -30,12 +32,23 @@
           justify="center"
           class="text-center"
         >
-          <img :src="photo.full_picture" style="height:auto;" />
-          <v-overlay absolute class="d-flex align-end" opacity="0">
-            <p><b>Author: </b>{{ photo.author }}</p>
-            <p><b>Camera: </b>{{ photo.camera }}</p>
-            <p><b>Tags: </b>{{ photo.tags }}</p>
-          </v-overlay>
+          <div v-if="photoReady">
+            <img :src="photo.full_picture" style="height:auto;" />
+            <v-overlay absolute class="d-flex align-end" opacity="0">
+              <p><b>Author: </b>{{ photo.author }}</p>
+              <p><b>Camera: </b>{{ photo.camera }}</p>
+              <p><b>Tags: </b>{{ photo.tags }}</p>
+            </v-overlay>
+          </div>
+          <div v-else>
+            <v-progress-circular
+              :size="50"
+              color="primary"
+              indeterminate
+              class="text-center"
+            ></v-progress-circular>
+            <h2>Loading photo...</h2>
+          </div>
         </v-carousel-item>
       </v-carousel>
     </v-dialog>
@@ -56,6 +69,7 @@ export default {
       page: 0,
       dialog: false,
       ready: false,
+      photoReady: false,
       stepNum: 0,
       disabled: false,
       currentPhoto: 0
@@ -104,6 +118,7 @@ export default {
   },
   methods: {
     photoView: async function(id, index) {
+      this.photoReady = false;
       this.currentPhoto = index;
       try {
         const response = await axios.get(
@@ -116,6 +131,7 @@ export default {
         );
         this.photo = response.data;
         this.dialog = true;
+        this.photoReady = true;
       } catch (e) {
         Swal.fire({
           icon: "error",
@@ -154,6 +170,7 @@ export default {
   },
   watch: {
     stepNum: async function(nextStep, oldStep) {
+      this.photoReady = false;
       nextStep > oldStep ? this.currentPhoto++ : this.currentPhoto--;
       try {
         const response = await axios.get(
@@ -166,6 +183,7 @@ export default {
           }
         );
         this.photo = response.data;
+        this.photoReady = true;
       } catch (e) {
         Swal.fire({
           icon: "error",
