@@ -12,7 +12,13 @@
       </v-col>
     </v-row>
     <v-row v-if="ready">
-      <v-col v-for="(photo, index) in photos" :key="photo.id" cols="12" md="4">
+      <v-col
+        v-for="(photo, index) in photos"
+        :key="photo.id"
+        cols="12"
+        sm="6"
+        md="4"
+      >
         <a @click="photoView(photo.id, index)">
           <v-img :src="photo.cropped_picture"></v-img
         ></a>
