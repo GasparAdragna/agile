@@ -10,8 +10,8 @@
       </v-col>
     </v-row>
     <v-row v-if="ready">
-      <v-col v-for="photo in photos" :key="photo.id" cols="12" md="4">
-        <a @click="photoView(photo.id)">
+      <v-col v-for="(photo, index) in photos" :key="photo.id" cols="12" md="4">
+        <a @click="photoView(photo.id, index)">
           <v-img :src="photo.cropped_picture"></v-img
         ></a>
       </v-col>
@@ -21,7 +21,7 @@
     </v-row>
     <br />
     <v-dialog v-model="dialog">
-      <v-carousel v-model="stepNum" height="100%" hide-delimiters="true">
+      <v-carousel v-model="stepNum" height="100%" :hide-delimiters="true">
         <v-carousel-item
           v-for="(item, i) in photos"
           :key="i"
@@ -56,7 +56,8 @@ export default {
       dialog: false,
       ready: false,
       stepNum: 0,
-      disabled: false
+      disabled: false,
+      currentPhoto: 0
     };
   },
   created: async function() {
@@ -92,7 +93,8 @@ export default {
     }
   },
   methods: {
-    photoView: async function(id) {
+    photoView: async function(id, index) {
+      this.currentPhoto = index;
       try {
         const response = await axios.get(
           "http://interview.agileengine.com/images/" + id,
@@ -131,10 +133,12 @@ export default {
     }
   },
   watch: {
-    stepNum: async function(newStep) {
+    stepNum: async function(nextStep, oldStep) {
+      nextStep > oldStep ? this.currentPhoto++ : this.currentPhoto--;
       try {
         const response = await axios.get(
-          "http://interview.agileengine.com/images/" + this.photos[newStep].id,
+          "http://interview.agileengine.com/images/" +
+            this.photos[this.currentPhoto].id,
           {
             headers: {
               Authorization: "Bearer " + this.token
