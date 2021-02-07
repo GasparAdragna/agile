@@ -18,6 +18,7 @@
         cols="12"
         sm="6"
         md="4"
+        lg="3"
       >
         <a @click="photoView(photo.id, index)">
           <v-img :src="photo.cropped_picture"></v-img
