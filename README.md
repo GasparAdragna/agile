@@ -1,4 +1,4 @@
-# Gaspar Adragna - Vue Submisson for AgileEngine
+# Gaspar Adragna - Vue Submission for AgileEngine
 
 ![alt text](https://agileengine.com/wordpress/wp-content/uploads/2018/12/logo.png)
 
