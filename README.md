@@ -1,6 +1,6 @@
 # Gaspar Adragna - ChatBot Submission for Jobsity
 
-[![N|Solid](https://agileengine.com/wordpress/wp-content/uploads/2018/12/logo.png](https://nodesource.com/products/nsolid)
+![alt text](https://agileengine.com/wordpress/wp-content/uploads/2018/12/logo.png)
 
 
 This is my submission for the required challenge.
