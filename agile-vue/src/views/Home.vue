@@ -15,10 +15,13 @@
           <v-img :src="photo.cropped_picture"></v-img
         ></a>
       </v-col>
+      <v-btn color="primary" @click="morePhotos()" block :disabled="disabled">
+        Load more photos
+      </v-btn>
     </v-row>
-
+    <br />
     <v-dialog v-model="dialog">
-      <v-carousel v-model="stepNum" height="100%">
+      <v-carousel v-model="stepNum" height="100%" hide-delimiters="true">
         <v-carousel-item
           v-for="(item, i) in photos"
           :key="i"
@@ -32,7 +35,6 @@
             <p><b>Author: </b>{{ photo.author }}</p>
             <p><b>Camera: </b>{{ photo.camera }}</p>
             <p><b>Tags: </b>{{ photo.tags }}</p>
-            <br /><br />
           </v-overlay>
         </v-carousel-item>
       </v-carousel>
@@ -53,7 +55,8 @@ export default {
       page: 0,
       dialog: false,
       ready: false,
-      stepNum: 0
+      stepNum: 0,
+      disabled: false
     };
   },
   created: async function() {
@@ -101,6 +104,27 @@ export default {
         );
         this.photo = response.data;
         this.dialog = true;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async morePhotos() {
+      this.disabled = true;
+      this.page++;
+      try {
+        const response = await axios.get(
+          "http://interview.agileengine.com/images/?page=" + this.page,
+          {
+            headers: {
+              Authorization: "Bearer " + this.token
+            }
+          }
+        );
+        for (var i = 0; i < response.data.pictures.length; i++) {
+          this.photos.push(response.data.pictures[i]);
+        }
+        this.page = response.data.page;
+        this.disabled = false;
       } catch (e) {
         console.log(e);
       }
